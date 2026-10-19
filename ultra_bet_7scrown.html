@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTRA BET V3.3 - 7S CROWN + 6ဇ</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+    <style>
+:root{
+  --bg1:#06111f;
+  --bg2:#0b1f38;
+  --card:rgba(20,30,48,0);
+  --line:rgba(255,255,255,0.08);
+  --blue:#00d4ff;
+  --blue2:#3b82f6;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background: linear-gradient(145deg,var(--bg1),var(--bg2));
+  color: var(--text);
+  padding: 12px;
+  min-height: 100vh;
+}
+
+/* Drawer Background */
+.drawer{
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100%;
+    background: rgba(10, 15, 25, 0.85);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    transition: 0.35s ease;
+    z-index: 9999;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.4);
+}
+
+.drawer.open{
+    left: 0;
+}
+
+/* Header */
+.drawer-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.drawer-header h3{
+    color: #fff;
+    font-size: 16px;
+}
+
+/* ❌ Close Button (ပြန်ဖျောက်တဲ့ခလုတ်) */
+.close-btn{
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+
+    color: #fff;
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: 0.25s;
+    padding: 0;
+}
+
+.close-btn:hover{
+    background: rgba(255,255,255,0.15);
+    transform: scale(1.1);
+}
+
+/* Items */
+.drawer-content{
+    padding: 10px;
+}
+
+.drawer-item{
+    padding: 12px 14px;
+    margin: 8px 0;
+    border-radius: 10px;
+
+    color: #e5e7eb;
+    font-size: 14px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.drawer-item:hover{
+    background: rgba(59,130,246,0.15);
+    border-color: rgba(59,130,246,0.4);
+    transform: translateX(5px);
+}
+
+/* Logout Special */
+.logout-item{
+    color: #ff4d4d;
+    border: 1px solid rgba(255,77,77,0.2);
+}
+
+.logout-item:hover{
+    background: rgba(255,77,77,0.15);
+    border-color: rgba(255,77,77,0.5);
+}
+
+/* Divider */
+.drawer-divider{
+    height: 1px;
+    margin: 10px 0;
+    background: rgba(255,255,255,0.08);
+}
+.appbar {
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+    padding: 14px 16px 8px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    margin-bottom: 16px;
+    border-radius: 0 0 20px 20px;
+}
+
+.appbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appbar-left h2 {
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.appbar-right {
+    text-align: right;
+}
+
+.status-bar {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px;
+}
+
+.container{
+  max-width: 520px;
+  margin: auto;
+}
+
+.card{
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35);
+}
+
+.status-header h2{
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue);
+  text-shadow: 0 0 15px rgba(0,212,255,.45);
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.stat-card{
+  background: rgba(255,255,255,.04);
+  border: 1px solid #facc15;
+  border-radius: 20px;
+  padding: 18px;
+  text-align:center;
+  box-shadow: inset 0 0 10px rgba(255,255,255,.02);
+}
+
+.stat-card label{
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.stat-card b{
+  font-size: 20px;
+  margin-top: 5px;
+  display:block;
+}
+
+.timer-display{
+  font-size: 38px;
+  font-weight: bold;
+  color: var(--blue);
+  text-shadow: 0 0 18px rgba(0,212,255,.4);
+}
+
+input,select{
+  width:100%;
+  padding:15px;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  margin-top:8px;
+  margin-bottom:12px;
+  background: rgba(10,20,35,.8);
+  border:1px solid rgba(255,255,255,.06);
+  color:white;
+  font-size:15px;
+}
+
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:18px;
+  font-weight:700;
+  font-size:15px;
+  color:white;
+  cursor:pointer;
+  margin-top:8px;
+  background: linear-gradient(135deg,#00c6ff,#2563eb);
+  box-shadow: 0 8px 20px rgba(37,99,235,.35);
+  transition: .2s;
+}
+
+button:active{
+  transform: scale(.97);
+}
+
+button.logout{
+  background: transparent;
+  border: 1px solid #facc15;
+  color: #94a3b8;
+  box-shadow: none;
+}
+
+.log-container{
+  background: rgba(3,7,18,.75);
+  border-radius: 18px;
+  padding: 12px;
+  height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+}
+
+#bot-tag{
+  background: rgba(255,255,255,.05)!important;
+  border-radius: 999px!important;
+  padding: 4px 10px!important;
+}
+
+.dot.active{
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+.num-img{
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: contain;
+  vertical-align: middle;
+  margin: 0 4px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#logs img{
+  max-width: 28px !important;
+  max-height: 28px !important;
+}
+
+.status-header{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:flex-start !important;
+}
+
+.status-header > div:first-child,
+#display-time-box{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.status-header h2{
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+
+#display-time-box{
+  display:flex !important;
+  flex-direction:column;
+  align-items:flex-end;
+}
+
+#countdown-ui{
+  font-size: 24px !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+.drawer{
+    position:fixed;
+    top:0;
+    left:-340px;
+
+    width:320px;
+    height:100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,0.72),
+            rgba(0,0,0,0.72)
+        );
+
+    backdrop-filter:blur(18px);
+
+    border-right:1px solid rgba(0,212,255,0.18);
+
+    z-index:2000;
+
+    overflow-y:auto;
+
+    transition:0.45s cubic-bezier(.22,1,.36,1);
+
+    box-shadow:
+        15px 0 40px rgba(0,0,0,0.65),
+        inset -1px 0 0 rgba(255,255,255,0.03);
+}
+
+/* Open */
+.drawer.open{
+    left:0;
+}
+
+/* Glow Effect */
+.drawer::before{
+    content:"";
+
+    position:absolute;
+    top:-50%;
+    left:-50%;
+
+    width:200%;
+    height:200%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,212,255,0.08),
+            transparent 60%
+        );
+
+    animation:drawerGlow 7s linear infinite;
+
+    pointer-events:none;
+}
+
+@keyframes drawerGlow{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+/* Header */
+.drawer-header{
+    position:relative;
+
+    padding:22px 22px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,212,255,0.08),
+            transparent
+        );
+
+    z-index:2;
+}
+
+/* App Title */
+.drawer-header h3{
+    margin:0;
+
+    font-size:20px;
+    font-weight:800;
+
+    color:var(--blue);
+
+    letter-spacing:0.5px;
+
+    text-shadow:
+        0 0 12px rgba(0,212,255,0.45);
+}
+
+/* Close Button */
+.drawer-header button{
+    width:38px;
+    height:38px;
+
+    border:none;
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.05);
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.25s;
+}
+
+.drawer-header button:hover{
+    background:rgba(255,0,0,0.15);
+
+    color:#ff4d4d;
+
+    transform:rotate(90deg) scale(1.08);
+}
+
+/* Content */
+.drawer-content{
+    padding:14px 0 24px;
+}
+
+/* Item */
+.drawer-item{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    margin:10px 14px;
+    padding:15px 18px;
+
+    border-radius:18px;
+
+    font-size:15px;
+    font-weight:600;
+
+    color:#e2e8f0;
+
+    background:rgba(255,255,255,0.03);
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:all 0.28s ease;
+}
+
+/* Shine Effect */
+.drawer-item::before{
+    content:"";
+
+    position:absolute;
+    top:0;
+    left:-120%;
+
+    width:100%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.12),
+            transparent
+        );
+
+    transition:0.6s;
+}
+
+/* Hover */
+.drawer-item:hover{
+    transform:
+        translateX(6px)
+        scale(1.02);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,212,255,0.12),
+            rgba(0,212,255,0.03)
+        );
+
+    border:1px solid rgba(0,212,255,0.25);
+
+    color:var(--blue);
+
+    box-shadow:
+        0 0 18px rgba(0,212,255,0.15),
+        inset 0 0 12px rgba(0,212,255,0.08);
+}
+
+.drawer-item:hover::before{
+    left:120%;
+}
+
+/* Click */
+.drawer-item:active{
+    transform:scale(0.96);
+}
+
+/* Divider */
+.drawer-divider{
+    height:1px;
+
+    margin:18px 22px;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            rgba(255,255,255,0.12),
+            transparent
+        );
+}
+
+/* Logout */
+.logout-item{
+    color:#ff5c5c;
+
+    background:rgba(255,0,0,0.04);
+}
+
+.logout-item:hover{
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,0,0,0.12),
+            rgba(255,0,0,0.03)
+        );
+
+    border:1px solid rgba(255,0,0,0.18);
+
+    color:#ff4d4d;
+
+    box-shadow:
+        0 0 18px rgba(255,0,0,0.12);
+}
+
+/* Overlay */
+.drawer-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:blur(4px);
+
+    z-index:1999;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:0.35s ease;
+}
+
+.drawer-overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+<!-- History Modal -->
+<div id="history-modal" style="
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+">
+
+    <div style="
+        width:90%;
+        max-width:420px;
+        background:rgba(6,17,31,0.98);
+        border:1px solid #00d4ff;
+        border-radius:20px;
+        padding:16px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.6);
+        animation:pop .25s ease;
+    ">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;color:#00d4ff;">📜 Game History</h3>
+            <button onclick="closeHistory()" style="
+                background:none;
+                border:none;
+                color:#94a3b8;
+                font-size:22px;
+                cursor:pointer;
+            ">✕</button>
+        </div>
+
+        <div id="history-list" style="
+            margin-top:12px;
+            max-height:350px;
+            overflow-y:auto;
+            font-size:13px;
+            color:#e2e8f0;
+        "></div>
+
+    </div>
+</div>
+
+<style>
+@keyframes pop{
+    from{transform:scale(0.8);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<div class="appbar">
+    <div class="appbar-content">
+        <!-- Left Side -->
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button onclick="openDrawer()" 
+                    style="background: rgba(255,255,255,0.12); 
+                           border: 1px solid rgba(0,212,255,0.5); 
+                           padding: 9px 13px; 
+                           border-radius: 50%; 
+                           font-size: 22px; 
+                           width: 46px; 
+                           height: 46px;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           flex-shrink: 0;">
+                ☰
+            </button>
+
+        <!-- Right Side -->
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- Music -->
+            <button onclick="toggleMusicPlayer()" 
+                    style="background: rgba(255,255,255,0.1); 
+                           border: 1px solid rgba(0,212,255,0.4); 
+                           padding: 8px 12px; 
+                           border-radius: 50px; 
+                           font-size: 22px;">
+                🎵
+            </button>
+            
+            <!-- Background -->
+            <button onclick="toggleBGPanel()" 
+                    style="background: rgba(255,255,255,0.1); 
+                           border: 1px solid rgba(34,197,94,0.4); 
+                           padding: 8px 12px; 
+                           border-radius: 50px; 
+                           font-size: 22px;">
+                🌄 
+            </button>
+            
+            <button onclick="refreshApp()" 
+        style="background: rgba(255,255,255,0.1); 
+               border: 1px solid rgba(251,191,36,0.4); 
+               padding: 8px 12px; 
+               border-radius: 50px; 
+               font-size: 22px;">
+    🔄
+</button>
+                        </div>
+                        </div>
+            <!-- Timer -->
+            <div id="display-time-box" style="text-align: right; min-width: 75px;">
+                <div id="countdown-ui" class="timer-display" style="font-size: 32px;">00:00</div>
+                <small id="issue-ui" style="color:#94a3b8; font-size: 10.5px;">စတင်ရန် စောင့်နေ...</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status-bar">
+        <small id="status-text"><span class="dot" id="status-dot"></span> Connected: 777BIGWIN</small>
+    </div>
+</div>
+<div id="history-dialog" style="
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.75);
+    z-index:999999;
+    justify-content:center;
+    align-items:center;
+">
+    <!-- overlay click to close -->
+    <div onclick="closeHistory()" style="
+        position:absolute;
+        top:0; left:0;
+        width:100%;
+        height:100%;
+    "></div>
+
+    <div style="
+        position:relative;
+        width:90%;
+        max-width:400px;
+        background:#0b1f38;
+        border:1px solid #00d4ff;
+        border-radius:18px;
+        padding:15px;
+        z-index:2;
+        animation:pop .2s ease;
+    ">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h3 style="margin:0;color:#00d4ff;">📜 Game History</h3>
+
+    <button onclick="closeHistory()" style="
+        width:34px;
+        height:34px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        padding:0;
+        line-height:1;
+
+        background:#ef4444;
+        border:none;
+        color:white;
+        font-size:18px;
+
+        border-radius:10px;
+        cursor:pointer;
+        transition:0.2s;
+    ">✕</button>
+</div>
+
+        <div id="history-list" style="
+            margin-top:12px;
+            max-height:350px;
+            overflow-y:auto;
+            font-size:13px;
+            color:#e2e8f0;
+        "></div>
+    </div>
+</div>
+<!-- Music Player (Hidden by default) -->
+<div id="music-player" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(6,17,31,0.95); border: 1px solid var(--blue); border-radius: 20px; padding: 15px 20px; width: 90%; max-width: 420px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h4 style="margin:0; color:var(--blue);">🎵 Now Playing</h4>
+        <button onclick="toggleMusicPlayer()" style="
+    background:#FFFFFF;
+    border:none;
+    color:#94a3b8;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s;
+">
+    ✕
+</button>
+    </div>
+    
+    <input type="file" id="audio-input" accept="audio/*" style="display:none;">
+    <button onclick="document.getElementById('audio-input').click()" 
+            style="width:100%; margin-bottom:10px; background: linear-gradient(135deg,#22c55e,#15803d);">
+        📁 ဖုန်းထဲက သီချင်း ရွေးပါ
+    </button>
+    
+    <audio id="audio-player" style="width:100%;" controls></audio>
+    
+    <div style="margin-top:8px; font-size:12px; color:#94a3b8; text-align:center;" id="song-name">No song selected</div>
+</div>
+<!-- Background Changer Panel -->
+<div id="bg-panel" style="display: none; position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(6,17,31,0.98); border: 1px solid var(--blue); border-radius: 20px; padding: 18px; width: 90%; max-width: 420px; z-index: 999; box-shadow: 0 15px 35px rgba(0,0,0,0.7);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h4 style="margin:0; color:var(--blue);">🌄 Background ပြောင်းမယ်</h4>
+    <button onclick="toggleBGPanel()" style="
+        background:#FFFFFF;
+        border:none;
+        color:#94a3b8;
+        width:34px;
+        height:34px;
+        border-radius:10px;
+        font-size:18px;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        transition:0.2s;
+    ">
+        ✕
+    </button>
+</div>
+    
+   <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:15px;">
+    <div onclick="setBackground(1)" style="height:65px; background:linear-gradient(145deg,#06111f,#0b1f38); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(2)" style="height:65px; background:linear-gradient(145deg,#1a0033,#4b0082); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(3)" style="height:65px; background:linear-gradient(145deg,#0f2b1f,#1a3c2e); border-radius:12px; cursor:pointer;"></div>
+
+    <div onclick="setBackground(4)" style="height:65px; background:linear-gradient(145deg,#330000,#800000); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(5)" style="height:65px; background:linear-gradient(145deg,#3a1c00,#ff8c00); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(6)" style="height:65px; background:linear-gradient(145deg,#002b36,#00bcd4); border-radius:12px; cursor:pointer;"></div>
+
+    <div onclick="setBackground(7)" style="height:65px; background:linear-gradient(145deg,#1f1f1f,#555555); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(8)" style="height:65px; background:linear-gradient(145deg,#2d0036,#ff1493); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(9)" style="height:65px; background:linear-gradient(145deg,#001a33,#0066ff); border-radius:12px; cursor:pointer;"></div>
+    <div onclick="setBackground(10)" style="height:65px; background:linear-gradient(145deg,#FFFFFF,#FFFFFF); border-radius:12px; cursor:pointer;"></div>
+</div>
+    
+    <button onclick="document.getElementById('bg-upload').click()" 
+            style="width:100%; padding:14px; background: linear-gradient(135deg,#a855f7,#7c3aed); border-radius:16px; font-weight:700;">
+        📸 ကိုယ်ပိုင်ပုံ တင်မယ်
+    </button>
+    <input type="file" id="bg-upload" accept="image/*" style="display:none;">
+</div>
+
+  <!-- Login UI -->
+<div id="login-ui" class="card" style="
+    max-width: 360px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+">
+
+    <h3 style="
+        margin-top:0;
+        text-align:center;
+        color:#fff;
+        font-size:22px;
+        margin-bottom:20px;
+    ">🔐 အကောင့်ဝင်ရန်</h3>
+
+    <!-- Platform -->
+    <label style="color:#cbd5e1; font-size:14px;">Platform</label>
+
+    <div id="platformPicker" onclick="openPlatformModal()" style="
+        width:100%;
+        padding:12px 14px;
+        border-radius:12px;
+        background:rgba(255,255,255,0.08);
+        color:#fff;
+        font-size:15px;
+        font-weight:bold;
+        margin:8px 0 14px;
+        box-sizing:border-box;
+        cursor:pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        🎰 777 BIGWIN
+    </div>
+
+    <input type="hidden" id="platform" value="777BIGWIN">
+
+    <!-- Phone -->
+    <label style="color:#cbd5e1; font-size:14px;">📱 ဖုန်းနံပါတ်</label>
+    <input type="tel" id="phone" placeholder="09xxxxxxxxx" style="
+        width:100%;
+        padding:12px;
+        margin:8px 0 14px;
+        border:none;
+        border-radius:12px;
+        background:rgba(255,255,255,0.08);
+        color:white;
+        font-size:15px;
+        outline:none;
+        box-sizing:border-box;
+    ">
+
+    <!-- Password -->
+    <label style="color:#cbd5e1; font-size:14px;">🔑 Password</label>
+    <input type="password" id="password" placeholder="Password ထည့်ပါ" style="
+        width:100%;
+        padding:12px;
+        margin:8px 0 18px;
+        border:none;
+        border-radius:12px;
+        background:rgba(255,255,255,0.08);
+        color:white;
+        font-size:15px;
+        outline:none;
+        box-sizing:border-box;
+    ">
+
+    <!-- 7S Proxy (Browser CORS fix) -->
+    <div id="s7-proxy-box" style="display:none; margin-bottom:12px;">
+        <label style="color:#c084fc; font-size:13px;">🔗 Proxy (မလိုအပ် — Website ဖွင့်ရင် auto)</label>
+        <input type="text" id="s7-proxy-input" placeholder="http://127.0.0.1:8787" style="
+            width:100%; padding:12px; margin:8px 0; border:none; border-radius:12px;
+            background:rgba(192,132,252,0.12); color:white; font-size:14px; outline:none; box-sizing:border-box;
+        ">
+        <small style="color:#94a3b8; font-size:11px;">Website ဖွင့်ရင် ဘာမှ ထည့်စရာမလို</small>
+    </div>
+    <!-- Button -->
+    <button onclick="handleLogin()" style="
+        width:100%;
+        padding:13px;
+        border:none;
+        border-radius:12px;
+        background: linear-gradient(135deg,#06b6d4,#3b82f6);
+        color:white;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+        box-shadow: 0 4px 15px rgba(59,130,246,0.35);
+    ">
+        🚀 Login ဝင်မည်
+    </button>
+    <button onclick="openRegister()" style="
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    border:none;
+    border-radius:12px;
+    background: linear-gradient(135deg,#22c55e,#16a34a);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow: 0 4px 15px rgba(34,197,94,0.35);
+">
+    + အကောင့်သစ်ဖောက်မည်
+</button>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" onclick="closePlatformModal()" style="
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.45);
+    z-index:9998;
+"></div>
+
+<!-- Bottom Sheet -->
+<div id="platformModal" style="
+    display:none;
+    position:fixed;
+    left:2px;
+    right:2px;
+    bottom:2px;
+    background:#111827;
+    border-radius:22px 22px 0 0;
+    padding:20px;
+    z-index:9999;
+    animation: slideUp 0.25s ease;
+    border:2px solid rgba(255,255,255,0.4);
+    box-shadow:0 0 18px rgba(255,255,255,0.15);
+">
+
+    <div style="text-align:center; color:#94a3b8; margin-bottom:10px; font-size:14px;">
+        ဂိမ်းအမျိုးအစား ရွေးချယ်ပါ
+    </div>
+
+    <div onclick="selectPlatform('777BIGWIN','🎰 777 BIGWIN')" style="
+    padding:14px;
+    margin-bottom:10px;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    background:rgba(255,255,255,0.04);
+    color:#facc15;
+    font-weight:bold;
+">
+    🎰 777 BIGWIN
+</div>
+
+<div onclick="selectPlatform('CKLOTTERY','🎯 CK LOTTERY')" style="
+    padding:14px;
+    margin-bottom:10px;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    background:rgba(255,255,255,0.04);
+    color:#38bdf8;
+    font-weight:bold;
+">
+    🎯 CK LOTTERY
+</div>
+
+<div onclick="selectPlatform('6LOTTERY','🍀 6 LOTTERY')" style="
+    padding:14px;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    background:rgba(255,255,255,0.04);
+    color:#4ade80;
+    font-weight:bold;
+">
+    🍀 6 LOTTERY
+</div>
+<div onclick="selectPlatform('7SCROWN','🟣 7S CROWN')" style="
+    padding:14px;
+    margin-top:10px;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    background:rgba(255,255,255,0.04);
+    color:#c084fc;
+    font-weight:bold;
+">
+    🟣 7S CROWN
+</div>
+</div>
+
+<style>
+body{
+    background: linear-gradient(145deg,#0f172a,#1e3a8a,#312e81);
+    min-height:100vh;
+    margin:0;
+    font-family:sans-serif;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+</style>
+
+<script>
+// --- ၁။ အသံဖိုင် ၂ ခုလုံးကို ကုဒ်ရဲ့ ထိပ်ဆုံးမှာ တစ်ခါတည်း ကြိုဆောက်ထားမည် ---
+let audioContext = null;
+const audioDi1 = new Audio("https://www.777bigwingame.co/assets/mp3/di1-0f3d86cb.mp3");
+const audioDi2 = new Audio("https://www.777bigwingame.co/assets/mp3/di2-ad9aa8fb.mp3");
+
+function playCountdownSound(seconds) {
+    let currentAudio = null;
+
+    // ၅ စက္ကန့်ကနေ ၂ စက္ကန့်အထိ di1 သုံးမယ်၊ ၁ စက္ကန့်ဆို di2 သုံးမယ်
+    if (seconds >= 2 && seconds <= 5) {
+        currentAudio = audioDi1;
+    } else if (seconds === 1) {
+        currentAudio = audioDi2;
+    }
+
+    if (currentAudio) {
+        // စက္ကန့်အလိုက် အသံ အတိုင်းအတာ ချိန်ညှိ
+        if (seconds === 5) currentAudio.volume = 0.75;
+        else if (seconds === 4) currentAudio.volume = 0.80;
+        else if (seconds === 3) currentAudio.volume = 0.85;
+        else if (seconds === 2) currentAudio.volume = 0.90;
+        else if (seconds === 1) currentAudio.volume = 0.95;
+
+        // အသံကို အစကနေ ပြန်ပတ်ပေးရန် (မထပ်သွားစေရန်)
+        currentAudio.currentTime = 0;
+
+        // အသံစဖွင့်မည်
+        currentAudio.play().catch(err => {
+            console.log("Sound play failed:", err);
+        });
+    }
+}
+
+  
+function openRegister(){
+    window.open(
+        "https://www.777bigwingame.co/#/register?invitationCode=84318565611",
+        "_blank"
+    );
+}
+function showResultDialog(isWin, profit, resultText, winNum) {
+    const dialog = document.getElementById('result-dialog');
+    const icon = document.getElementById('result-icon');
+    const title = document.getElementById('result-title');
+    const prizeIcon = document.getElementById('prize-icon');
+    const amountEl = document.getElementById('result-amount');
+    const textEl = document.getElementById('result-text');
+
+    if (isWin) {
+        // WIN
+        icon.innerHTML = '🎉';
+        title.innerHTML = `YOU WIN!`;
+        title.style.color = "#facc15";
+        
+        prizeIcon.innerHTML = `<img src="https://i.supaimg.com/4f602596-8e4b-401c-9465-b978ececeeed/96017a9f-ba1e-4e8a-b557-0ac423cc44be.png" style="width: 85px; height: auto; filter: drop-shadow(0 0 15px #22ff88);">`;           // နိုင်ရင် ဆုခွက်
+        prizeIcon.style.filter = "drop-shadow(0 0 12px #22c55e)";
+        
+        amountEl.style.color = "#22ff88";
+        amountEl.innerHTML = `+${profit.toFixed(0)} Ks`;
+        textEl.innerHTML = resultText || "အနိုင်ရရှိပါပြီ";
+        
+    } else {
+        // LOSE
+        icon.innerHTML = '😔';
+        title.innerHTML = `YOU LOSE...`;
+        title.style.color = "#ef4444";
+        
+        prizeIcon.innerHTML = `<img src="https://i.supaimg.com/4f602596-8e4b-401c-9465-b978ececeeed/6b73e4b0-f4ce-422a-820a-e3ce47b8c0f0.png" style="width: 85px; height: auto; filter: drop-shadow(0 0 15px #22ff88);">`;           // ရှုံးရင် ဦးခေါင်းခွေ
+        prizeIcon.style.filter = "drop-shadow(0 0 12px #ef4444)";
+        
+        amountEl.style.color = "#ef4444";
+        amountEl.innerHTML = `-${Math.abs(profit).toFixed(0)} Ks`;
+        textEl.innerHTML = resultText || "ရှုံးသွားပါပြီ";
+    }
+
+    dialog.style.display = "block";
+
+    // 6.5 စက္ကန့်ပြီးရင် ပိတ်မယ်
+    setTimeout(() => {
+        closeResultDialog();
+    }, 6500);
+}
+
+function closeResultDialog() {
+    document.getElementById('result-dialog').style.display = "none";
+}
+function openPlatformModal() {
+    document.getElementById("platformModal").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
+
+function closePlatformModal() {
+    document.getElementById("platformModal").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+}
+
+function selectPlatform(value, text) {
+    document.getElementById("platform").value = value;
+    document.getElementById("platformPicker").innerText = text;
+    closePlatformModal();
+    const box = document.getElementById("s7-proxy-box");
+    if (box) box.style.display = (value === "7SCROWN") ? "block" : "none";
+    if (value === "7SCROWN") {
+        try {
+            document.getElementById("game-mode").value = "W1";
+            document.getElementById("bet-target").value = "PATTERN_BS";
+            const inp = document.getElementById("s7-proxy-input");
+            if (inp && !inp.value) inp.value = localStorage.getItem("s7_proxy") || "";
+        } catch (e) {}
+    }
+}
+
+function handleLogin() {
+    const platform = document.getElementById("platform").value;
+    const phone = document.getElementById("phone").value;
+    const password = document.getElementById("password").value;
+
+    alert(
+        "Platform: " + platform + "\n" +
+        "Phone: " + phone + "\n" +
+        "Password: " + password
+    );
+}
+</script>
+
+    <!-- Main UI -->
+   <div id="main-ui" style="display: none;">
+    <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+        <div class="stat-card">
+            <label>အကောင့် ID</label>
+            <b id="display-userid" style="color:#a5b4fc; font-size: 17px;">—</b>
+        </div>
+        <div class="stat-card">
+            <label>သင့် စုစုပေါင်း ငွေ</label>
+            <b id="display-bal" style="color:#FFC107; font-size: 17px;">0</b>
+        </div>
+        <div class="stat-card">
+            <label>PROFIT</label>
+            <b id="display-profit" style="font-size: 17px;">0.00Ks</b>
+        </div>
+    </div>
+<!-- Exact Match Style Result Dialog -->
+<div id="result-dialog" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 92%; max-width: 360px; background: linear-gradient(145deg, #0b1729, #1c2a4a); border: 2px solid #facc15; border-radius: 28px; z-index: 100000; box-shadow: 0 0 50px rgba(250, 204, 21, 0.6); overflow: hidden;">
+    <div style="padding: 28px 20px 25px; text-align: center; position: relative;">
+        
+        <!-- YOU WIN! / YOU LOSE -->
+        <div style="margin-bottom: 12px;">
+            <span id="result-icon" style="font-size: 32px; display: block; margin-bottom: 6px;"></span>
+            <h2 id="result-title" style="font-size: 26px; font-weight: 900; color: #facc15; margin: 0; text-shadow: 0 0 15px #facc15;">YOU WIN!</h2>
+        </div>
+
+        <!-- Dynamic Prize Icon -->
+        <div style="margin: 15px 0 20px;">
+            <div id="prize-icon" style="font-size: 62px; filter: drop-shadow(0 0 12px #22c55e);"></div>
+        </div>
+
+        <!-- Amount -->
+        <div id="result-amount" style="font-size: 52px; font-weight: 900; color: #facc15; text-shadow: 0 0 20px #facc15; line-height: 1; margin-bottom: 4px;">+10000 Ks</div>
+        <div id="result-text" style="color: #94a3b8; font-size: 15px; margin-bottom: 25px;"></div>
+
+        <!-- Collect Button -->
+        <button onclick="closeResultDialog()" 
+                style="width: 100%; padding: 18px; font-size: 18px; font-weight: 700; background: linear-gradient(90deg, #facc15, #fbbf24); color: #0f172a; border: none; border-radius: 999px; box-shadow: 0 10px 30px rgba(250, 204, 21, 0.7);">
+            ဟုတ်ပြီ
+        </button>
+    </div>
+</div>
+
+        <div class="card">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <select id="game-mode">
+                    <option value="W30">WinGo 30S</option>
+                    <option value="W1">WinGo 1Min</option>
+                </select>
+                <select id="bet-target">
+                    <option value="PATTERN_BS">Big/Small</option>
+                    <option value="PATTERN_NUM">Numbers</option>
+                </select>
+            </div>
+            <!-- Pattern Selection -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+    <select id="pattern-mode" onchange="togglePatternInput()">
+        <option value="AUTO_BS">BS Patterns</option>
+        <option value="CUSTOM" selected>Custom</option>
+        <option value="RANDOM">Auto Play</option>
+    </select>
+    
+    <select id="predefined-pattern">
+        <option value="BSBBSSB">BSBBSSB (Classic)</option>
+        <option value="BSSBBSS">BSSBBSS</option>
+        <option value="BBSSBBS">BBSSBBS</option>
+        <option value="BBSBSSB">BBSBSSB</option>
+        <option value="SBBSBBS">SBBSBBS</option>
+    </select>
+</div>
+
+<!-- Custom Sequence (ဒါကို ကွန်ထရိုးလုပ်မယ်) -->
+<div id="custom-sequence-container">
+    <label style="font-size:10px; color:#FFC107; margin-top:8px; display:block;">
+        Custom Sequence (B,S,B,B,S...)
+    </label>
+    <input type="text" id="custom-sequence" value="B,S,B,B" placeholder="B,S,B,B,S,S">
+</div>
+
+<!-- AUTO BET PROTECTION - Darker Background -->
+<div style="margin:18px 0; padding:20px; background:rgba(0,0,0,0.0); border-radius:20px; box-shadow:0 4px 25px rgba(0,0,0,0.6);">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+        <span style="font-size:20px;">🛡️</span>
+        <h4 style="margin:0; color:#00d4ff; font-size:15.5px; font-weight:700;">AUTO BET PROTECTION</h4>
+    </div>
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div>
+            <label style="font-size:12px; color:#22c55e; display:block; margin-bottom:4px;">✅ Stop on Profit</label>
+            <input type="number" id="stop-profit" value="5000" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid #22c55e33; color:white;">
+        </div>
+        
+        <div>
+            <label style="font-size:12px; color:#ef4444; display:block; margin-bottom:4px;">⛔ Stop on Loss</label>
+            <input type="number" id="stop-loss" value="10000" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid #ef444433; color:white;">
+        </div>
+        
+        <div>
+            <label style="font-size:12px; color:#f59e0b; display:block; margin-bottom:4px;">🔄 Max Consec. Loss</label>
+            <input type="number" id="max-consec-loss" value="5" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid #f59e0b33; color:white;">
+        </div>
+        
+        <div>
+            <label style="font-size:12px; color:#a5b4fc; display:block; margin-bottom:4px;">⏳ Bet Delay (sec)</label>
+            <input type="number" id="bet-delay" value="3" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid #a5b4fc33; color:white;">
+        </div>
+    </div>
+
+    <!-- Checkboxes -->
+    <div style="margin-top:16px; padding:12px; background:rgba(0,0,0,0.4); border-radius:12px; display:flex; justify-content:center; gap:30px; flex-wrap:wrap;">
+        <label style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; color:#e2e8f0;">
+            <input type="checkbox" id="enable-profit-stop" checked style="width:18px; height:18px; accent-color:#22c55e;">
+            <span>Profit Stop </span>
+        </label>
+        
+        <label style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; color:#e2e8f0;">
+            <input type="checkbox" id="enable-loss-stop" checked style="width:18px; height:18px; accent-color:#ef4444;">
+            <span>Loss Stop </span>
+        </label>
+    </div>
+</div>
+
+            <label style="font-size:10px; color:#FFC107; display:block;">MARTINGALE (1,3,8,24...)</label>
+            <input type="text" id="bet-multipliers" value="1,3,8,24,70,210">
+            
+            <label style="font-size:10px; color:#FFC107; display:block;">ထိုးကြေး (100..1000..10000....)MMK</label>
+            <input type="number" id="base-amount" value="100">
+            
+            <button id="action-btn" onclick="toggleBot()">🚀 စတင် ကစားမယ်</button>
+            <button class="logout" onclick="logout()">LOGOUT</button>
+        </div>
+        </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:8px;">
+            <h4 style="margin:0; font-size:12px;">📊 LIVE MONITOR</h4>
+            <span id="bot-tag" style="font-size:9px; padding:2px 8px; border-radius:10px; background:#0f172a; border:1px solid #334155;">ရပ်ထားသည်</span>
+        </div>
+        <div id="logs" class="log-container"></div>
+    </div>
+</div>
+
+<script>
+
+function openHistoryDialog(){
+
+    const box = document.getElementById('history-list');
+    box.innerHTML = "";
+
+    // ===== SUMMARY =====
+    let winCount = gameHistory.filter(h=>h.type==="win").length;
+    let loseCount = gameHistory.filter(h=>h.type==="lose").length;
+    let totalProfit = gameHistory.reduce((a,b)=>a + (b.profit||0),0);
+
+    const summary = document.createElement("div");
+    summary.innerHTML = `
+        <div style="
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            gap:10px;
+            margin-bottom:15px;
+        ">
+
+            <div style="
+                padding:12px;
+                border-radius:14px;
+                background:rgba(34,197,94,0.08);
+                border:1px solid #22c55e33;
+                text-align:center;
+            ">
+                <div style="font-size:12px;color:#94a3b8;">WINS</div>
+                <div style="font-size:18px;color:#22c55e;font-weight:bold;">${winCount}</div>
+            </div>
+
+            <div style="
+                padding:12px;
+                border-radius:14px;
+                background:rgba(239,68,68,0.08);
+                border:1px solid #ef444433;
+                text-align:center;
+            ">
+                <div style="font-size:12px;color:#94a3b8;">LOSE</div>
+                <div style="font-size:18px;color:#ef4444;font-weight:bold;">${loseCount}</div>
+            </div>
+
+            <div style="
+                padding:12px;
+                border-radius:14px;
+                background:rgba(59,130,246,0.08);
+                border:1px solid #3b82f633;
+                text-align:center;
+            ">
+                <div style="font-size:12px;color:#94a3b8;">PROFIT</div>
+                <div style="font-size:16px;color:${totalProfit>=0?'#22c55e':'#ef4444'};font-weight:bold;">
+                    ${totalProfit.toFixed(2)}
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    box.appendChild(summary);
+
+    // ===== EMPTY =====
+    if(gameHistory.length === 0){
+        box.innerHTML += `
+            <div style="
+                text-align:center;
+                padding:30px;
+                color:#64748b;
+            ">📭 No History</div>
+        `;
+        document.getElementById('history-dialog').style.display = "flex";
+        return;
+    }
+
+    // ===== LIST =====
+    gameHistory.slice(0,20).forEach(h=>{
+        const isWin = h.type==="win";
+
+        const div = document.createElement("div");
+
+        div.innerHTML = `
+            <div style="
+                padding:14px;
+                margin-bottom:12px;
+                border-radius:16px;
+                background:linear-gradient(145deg,rgba(15,23,42,0.9),rgba(2,6,23,0.95));
+                border:1px solid ${isWin?'#22c55e55':'#ef444455'};
+                box-shadow:0 0 18px rgba(0,0,0,0.4);
+            ">
+
+                <!-- TOP -->
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    font-size:11px;
+                    color:#94a3b8;
+                    margin-bottom:8px;
+                ">
+                    <span>🕒 အချိန် : ${h.time}</span>
+                    <span style="
+                        padding:2px 10px;
+                        border-radius:999px;
+                        background:rgba(56,189,248,0.15);
+                        color:#38bdf8;
+                    ">🎮 ${h.platform || 'VIP GAME'}</span>
+                </div>
+
+                <!-- ISSUE -->
+                <div style="
+                    font-size:14px;
+                    font-weight:700;
+                    color:#e2e8f0;
+                    margin-bottom:8px;
+                ">
+                    🎯 ပွဲစဥ် : <span style="color:#a5b4fc">${h.issue}</span>
+                </div>
+
+                <!-- BOTTOM -->
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    font-size:13px;
+                ">
+
+                    <span style="
+                        padding:4px 10px;
+                        border-radius:999px;
+                        background:rgba(245,158,11,0.15);
+                        color:#fbbf24;
+                        font-weight:600;
+                    ">
+                        💰 ${h.amount} Ks
+                    </span>
+
+                    <span style="
+                        padding:4px 10px;
+                        border-radius:999px;
+                        background:${isWin?'rgba(34,197,94,0.15)':'rgba(239,68,68,0.15)'};
+                        color:${isWin?'#22c55e':'#ef4444'};
+                        font-weight:700;
+                    ">
+                        ${h.type.toUpperCase()}
+                    </span>
+
+                    <span style="
+                        font-weight:800;
+                        color:${h.profit>=0?'#22c55e':'#ef4444'};
+                    ">
+                        📈 ${h.profit} Ks
+                    </span>
+
+                </div>
+
+            </div>
+        `;
+
+        box.appendChild(div);
+    });
+
+    document.getElementById('history-dialog').style.display = "flex";
+}
+
+// 🔥 FIXED CLOSE (force hide)
+function closeHistory(){
+    const el = document.getElementById('history-dialog');
+    el.style.display = "none";
+}
+
+const NUMBER_IMAGES = {
+    0: "https://i.ibb.co/fd83sgcT/Add-Text-05-11-04-42-02.png", 1: "https://i.ibb.co/B5KFNKMc/Add-Text-05-11-04-41-44.png",
+    2: "https://i.ibb.co/ynpYxfMh/Add-Text-05-11-04-42-20.png", 3: "https://i.ibb.co/RGXQZpYF/Add-Text-05-11-04-42-48.png",
+    4: "https://i.ibb.co/Ldfgtc5P/Add-Text-05-11-04-43-24.png", 5: "https://i.ibb.co/KjJtkMnZ/Add-Text-05-11-04-43-42.png",
+    6: "https://i.ibb.co/Zz6PJjRR/Add-Text-05-11-04-44-04.png", 7: "https://i.ibb.co/4nxqHPbH/Add-Text-05-11-04-44-31.png",
+    8: "https://i.ibb.co/zhH0fV4p/Add-Text-05-11-04-44-51.png", 9: "https://i.ibb.co/nsGsTzCY/Add-Text-05-11-04-45-08.png"
+};
+
+const CONFIG = {
+    'CKLOTTERY': { url: "https://ckygjf6r.com/api/webapi/", lang: 0 },
+    '777BIGWIN': { url: "https://api.bigwinqaz.com/api/webapi/", lang: 7 },
+    '6LOTTERY': { url: "https://6lotteryapi.com/api/webapi/", lang: 7 },
+    '7SCROWN': { url: "https://www.7scrown48.xyz/", lang: "EN", merchant: "7smmkf5", gameId: 46402 }
+};
+
+const S7 = {
+    bases: [
+        "https://www.78840182.com",
+        "https://www.7scrown48.xyz",
+        "https://www.7scrown27.xyz"
+    ],
+    direct: "https://www.78840182.com",
+    merchant: "7smmkf5",
+    gameId: 46402,
+    /** Same-origin /s7 when hosted; optional manual proxy override */
+    get base() {
+        const manual = (localStorage.getItem("s7_proxy") || "").replace(/\/+$/, "");
+        if (manual) return manual + "/s7";
+        if (location.protocol === "http:" || location.protocol === "https:") {
+            if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1" && !location.hostname.endsWith(".html")) {
+                return location.origin + "/s7";
+            }
+        }
+        return this.direct;
+    },
+    setBase(url) {
+        this.direct = url;
+        try { localStorage.setItem("s7_direct", url); } catch(e) {}
+    }
+};
+try {
+    const saved = localStorage.getItem("s7_direct");
+    if (saved) S7.direct = saved;
+} catch(e) {}
+
+
+function s7Headers(token) {
+    return {
+        accept: "application/json, text/plain, */*",
+        authorization: token || "",
+        language: "EN",
+        merchant: S7.merchant,
+        "content-type": "application/json;charset=UTF-8",
+        "User-Agent": navigator.userAgent
+    };
+}
+
+function normalizePhone7s(raw) {
+    let d = String(raw || "").replace(/\D/g, "");
+    if (d.startsWith("959") && d.length >= 11) d = d.slice(2);
+    if (d.startsWith("0")) d = d.slice(1);
+    if (d.startsWith("95") && d.length > 11) d = d.slice(2);
+    return d;
+}
+
+/** RSA modulus (hex) -> PEM for JSEncrypt */
+function hexModulusToPem(hex) {
+    hex = hex.replace(/\s/g, "");
+    // Build PKCS#1 RSAPublicKey DER then SPKI is complex; JSEncrypt accepts raw setPublicKey with modulus/exponent via setKey
+    return hex;
+}
+
+async function s7GetRsaModulus() {
+    const r = await axios.get(S7.base + "/wps/session/key/rsa", {
+        headers: { accept: "*/*", merchant: S7.merchant, language: "MY" },
+        timeout: 15000
+    });
+    return String(r.data || "").trim();
+}
+
+async function s7EncryptLoginBody(username, password, modulusHex) {
+    // Match app: DES-ECB encrypt JSON, RSA encrypt DES key
+    const bodyObj = { username: String(username), password: String(password), device: "MTH" };
+    const plain = JSON.stringify(bodyObj);
+    // Random 8-byte key as hex string used as UTF8 passphrase for CryptoJS
+    const keyStr = CryptoJS.lib.WordArray.random(8).toString();
+    const encrypted = CryptoJS.DES.encrypt(plain, CryptoJS.enc.Utf8.parse(keyStr), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    const desB64 = encrypted.toString(); // OpenSSL-ish base64
+
+    // RSA encrypt keyStr with modulus
+    const enc = new JSEncrypt();
+    // JSEncrypt needs PEM - build from n,e
+    const n = modulusHex;
+    const e = "010001";
+    // Use setPublicKey with XML or PEM
+    try {
+        // Build minimal RSA public key PEM from n,e using JSEncrypt internal if available
+        enc.setPublicKey(jsencryptPublicFromModExp(n, e));
+    } catch (err) {
+        throw new Error("RSA key setup failed: " + err.message);
+    }
+    const rsaKey = enc.encrypt(keyStr);
+    if (!rsaKey) throw new Error("RSA encrypt failed");
+    return { DES: desB64, RSA: rsaKey, success: true };
+}
+
+function jsencryptPublicFromModExp(modulusHex, exponentHex) {
+    // Convert hex modulus + exponent to PEM PKCS#1 RSAPublicKey
+    function hexToBytes(h) {
+        if (h.length % 2) h = "0" + h;
+        const a = [];
+        for (let i = 0; i < h.length; i += 2) a.push(parseInt(h.substr(i, 2), 16));
+        return a;
+    }
+    function encodeLen(n) {
+        if (n < 0x80) return [n];
+        const b = [];
+        let x = n;
+        while (x > 0) { b.unshift(x & 0xff); x >>= 8; }
+        return [0x80 | b.length, ...b];
+    }
+    function asn1Int(bytes) {
+        // add leading 0 if high bit set
+        if (bytes[0] & 0x80) bytes = [0, ...bytes];
+        return [0x02, ...encodeLen(bytes.length), ...bytes];
+    }
+    const mod = hexToBytes(modulusHex);
+    const exp = hexToBytes(exponentHex);
+    const seqInner = [...asn1Int(mod), ...asn1Int(exp)];
+    const seq = [0x30, ...encodeLen(seqInner.length), ...seqInner];
+    // PKCS#1 RSAPublicKey is the SEQUENCE itself for some libs; JSEncrypt expects SubjectPublicKeyInfo or PKCS1
+    // JSEncrypt setPublicKey accepts PKCS#1 PEM "-----BEGIN RSA PUBLIC KEY-----"
+    const b64 = btoa(String.fromCharCode(...seq));
+    const lines = b64.match(/.{1,64}/g).join("\n");
+    return "-----BEGIN RSA PUBLIC KEY-----\n" + lines + "\n-----END RSA PUBLIC KEY-----";
+}
+
+async function s7Login(username, password) {
+    const mod = await s7GetRsaModulus();
+    if (!mod || mod.length < 64) throw new Error("RSA modulus failed");
+    // Prefer exact vendor-style if window.reRsaV2 available, else crypto-js path
+    let enc;
+    if (typeof window.reRsaV2 === "function") {
+        enc = await window.reRsaV2({ username, password, device: "MTH" });
+    } else {
+        enc = await s7EncryptLoginBody(username, password, mod);
+    }
+    const res = await axios.post(S7.base + "/wps/session/login", 
+        typeof enc.DES === "string" ? (enc.DES.startsWith("{") ? enc.DES : JSON.stringify(enc.DES)) : JSON.stringify(enc.DES),
+        {
+            headers: {
+                accept: "application/json, text/plain, */*",
+                "content-type": "application/json",
+                merchant: S7.merchant,
+                language: "MY",
+                Encryption: enc.RSA,
+                Device: "MTH"
+            },
+            timeout: 20000
+        }
+    );
+    // Body must be the DES ciphertext string as JSON string value
+    // Fix: re-post correctly
+    return res.data;
+}
+
+async function s7LoginFixed(username, password) {
+    const mod = await s7GetRsaModulus();
+    if (!mod || mod.length < 64) throw new Error("RSA key failed");
+
+    const bodyObj = { username: String(username), password: String(password), device: "MTH" };
+    const plain = JSON.stringify(bodyObj);
+    const keyStr = CryptoJS.lib.WordArray.random(8).toString().slice(0, 8);
+    const des = CryptoJS.DES.encrypt(CryptoJS.enc.Utf8.parse(plain), CryptoJS.enc.Utf8.parse(keyStr), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    const desCipher = des.ciphertext.toString(CryptoJS.enc.Base64);
+
+    const enc = new JSEncrypt();
+    enc.setPublicKey(jsencryptPublicFromModExp(mod, "010001"));
+    const rsaCipher = enc.encrypt(keyStr);
+    if (!rsaCipher) throw new Error("RSA encrypt failed");
+
+    // Body is JSON string of ciphertext (quoted) - app sends encrypted string as body
+    const res = await axios.post(S7.base + "/wps/session/login", JSON.stringify(desCipher), {
+        headers: {
+            accept: "application/json, text/plain, */*",
+            "content-type": "application/json",
+            merchant: S7.merchant,
+            language: "MY",
+            Encryption: rsaCipher,
+            Device: "MTH"
+        },
+        timeout: 20000
+    });
+    const data = res.data;
+    if (data && data.success && data.value && data.value.token) {
+        return { token: data.value.token, userName: data.value.userName, id: data.value.id };
+    }
+    throw new Error((data && (data.message || data.errorCode)) || "Login failed");
+}
+
+async function s7GetGameToken(sessionToken) {
+    const qs = "lottoMode=SEA_Tradition_Mobile&launchMode=LOTT&lottoGameCode=TCGWGG&lottoView=betting&device=MOBILE&hasLobby=true&language=EN&title=7S";
+    const tryBases = [S7.base, ...S7.bases];
+    let lastErr = "Game token failed";
+    for (const base of tryBases) {
+        try {
+            const r = await axios.get(base + "/wps/game/launchGame?" + qs, {
+                headers: s7Headers(sessionToken), timeout: 15000, validateStatus: () => true
+            });
+            if (r.data && r.data.success && r.data.value && r.data.value.gameUrl) {
+                const m = String(r.data.value.gameUrl).match(/[?&]token=([^&]+)/);
+                if (m) {
+                    if (base !== S7.base && !base.includes("/s7")) S7.setBase(base);
+                    return m[1];
+                }
+            }
+            if (r.data && r.data.errorCode) lastErr = r.data.message || r.data.errorCode;
+        } catch (e) { lastErr = e.message; }
+    }
+    throw new Error(lastErr);
+}
+
+async function s7Balance(sessionToken) {
+    const r = await axios.get(S7.base + "/wps/v2/wallets/balance?typeId=0", {
+        headers: s7Headers(sessionToken),
+        timeout: 12000
+    });
+    if (r.data && r.data.success) {
+        return parseFloat(r.data.value?.sumBalance || r.data.value?.balance?.[0]?.balance || 0);
+    }
+    return null;
+}
+
+async function s7History(gameToken) {
+    const r = await axios.get(S7.base + `/m/lotto-thai-h5/lgw/draw/${S7.gameId}?page=0&size=20`, {
+        headers: s7Headers(gameToken),
+        timeout: 12000
+    });
+    return (r.data && r.data.content) || [];
+}
+
+async function s7CurrentIssue(gameToken) {
+    // Prefer /lgw/numeros/near
+    try {
+        const r = await axios.get(S7.base + "/m/lotto-thai-h5/lgw/numeros/near?gameId=" + S7.gameId, {
+            headers: s7Headers(gameToken), timeout: 10000, validateStatus: () => true
+        });
+        if (r.status >= 200 && r.status < 300 && r.data) {
+            const d = r.data;
+            const pick = (o) => {
+                if (o == null) return null;
+                if (typeof o === "string" || typeof o === "number") return String(o);
+                if (o.numero != null) return String(o.numero);
+                return null;
+            };
+            let n = pick(d.currentNumero) || pick(d.nextNumero) || pick(d.activeNumero) || pick(d.numero);
+            if (!n && d.previousNumero && d.previousNumero.numero != null) {
+                const prev = String(d.previousNumero.numero);
+                if (/^\d+$/.test(prev)) n = String(BigInt(prev) + 1n);
+            }
+            if (n) return String(n);
+        }
+    } catch (e) { console.warn("near fail", e.message); }
+    // Fallback history + 1
+    try {
+        const list = await s7History(gameToken);
+        if (!list.length) return null;
+        const latest = String(list[0].numero);
+        if (/^\d+$/.test(latest)) return String(BigInt(latest) + 1n);
+        return String(parseInt(latest, 10) + 1);
+    } catch (e) { return null; }
+}
+
+async function s7PlaceBet(gameToken, side, amount, period) {
+    // BIG=0 SMALL=1
+    const sideCode = (side === "BIG" || side === "B" || side === 13) ? "0" : "1";
+    const slip = sideCode + "~1~3062~1~0~1~~" + amount;
+    const body = [{
+        chase: false, quickChase: false, orderType: 1, abandoning: false, winningStop: false,
+        prizeModeId: 5, betCartAmountSum: Number(amount), gameId: S7.gameId, device: "MTH",
+        currentNumero: String(period), bettingSlipString: slip, bettingApproach: "1", bettingSlip: null
+    }];
+    const r = await axios.post(S7.base + "/m/lotto-thai-h5/lgw/orders/betting/batch", body, {
+        headers: s7Headers(gameToken),
+        timeout: 15000
+    });
+    const data = r.data;
+    if (Array.isArray(data) && data[0] && data[0].bettingStatus === "SUCCESS") {
+        return { code: 0, data: data[0] };
+    }
+    return { code: -1, data, msg: JSON.stringify(data) };
+}
+
+
+let session = { token: "", gameToken: "", platform: "", isRunning: false, userId: "" };
+let stats = { profit: 0, betIdx: 0, sequenceIdx: 0 };
+let timeRemaining = 0;
+let gameHistory = JSON.parse(localStorage.getItem('ultra_history') || "[]");
+let protection = {
+    stopProfit: 5000,
+    stopLoss: 10000,
+    maxConsecLoss: 5,
+    delay: 3,
+    enableProfitStop: true,
+    enableLossStop: true,
+    currentConsecLoss: 0
+};
+// --- Persistence ---
+window.onload = () => {
+    const saved = localStorage.getItem('ultra_session');
+    if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('phone').value = data.phone;
+        document.getElementById('platform').value = data.platform;
+        if (data.token) {
+            session.token = data.token;
+            session.platform = data.platform;
+            session.gameToken = data.gameToken || "";
+            session.userId = data.userId || "";
+            initUI();
+        }
+    }
+    startVisualTimer();
+};
+
+function initUI() {
+    document.getElementById('login-ui').style.display = 'none';
+    document.getElementById('main-ui').style.display = 'block';
+    document.getElementById('display-time-box').style.display = 'block';
+    document.getElementById('status-dot').classList.add('active');
+    document.getElementById('status-text').innerText = "Connected: " + session.platform;
+    updateBalance();
+}
+
+function logout() {
+    localStorage.removeItem('ultra_session');
+    location.reload();
+}
+
+function saveHistory(data){
+    gameHistory.unshift(data);
+    if(gameHistory.length > 50) gameHistory.pop();
+    localStorage.setItem('ultra_history', JSON.stringify(gameHistory));
+}
+// --- Utils ---
+function addLog(msg, type = 'info') {
+    const box = document.getElementById('logs');
+    const div = document.createElement('div');
+
+    div.className = type;
+
+    // Base Style
+    div.style.padding = "12px 14px";
+    div.style.marginBottom = "10px";
+    div.style.borderRadius = "16px";
+    div.style.background = "linear-gradient(135deg,#0f172a,#111827)";
+    div.style.backdropFilter = "blur(6px)";
+    div.style.boxShadow = "0 4px 15px rgba(0,0,0,0.25)";
+    div.style.border = "1px solid #1e293b";
+    div.style.fontSize = "12px";
+    div.style.lineHeight = "1.6";
+    div.style.transition = "0.3s ease";
+    div.style.animation = "slideIn 0.35s ease";
+
+    // Type Colors
+    let icon = "📘";
+    let glow = "#38bdf8";
+    let text = "#cbd5e1";
+
+    if (type === 'win') {
+        icon = "💰";
+        glow = "#22c55e";
+        text = "#86efac";
+    }
+
+    if (type === 'lose') {
+        icon = "💀";
+        glow = "#ef4444";
+        text = "#fca5a5";
+    }
+
+    if (type === 'info') {
+        icon = "🎮";
+        glow = "#38bdf8";
+        text = "#93c5fd";
+    }
+
+    div.style.border = `1px solid ${glow}`;
+    div.style.boxShadow = `0 0 12px ${glow}22`;
+
+    div.innerHTML = `
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+        ">
+            <div style="
+                display:flex;
+                align-items:center;
+                gap:10px;
+                color:${text};
+                flex:1;
+                word-break:break-word;
+            ">
+                <div style="
+                    width:34px;
+                    height:34px;
+                    border-radius:12px;
+                    background:${glow}22;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:18px;
+                    border:1px solid ${glow};
+                    box-shadow:0 0 10px ${glow}55;
+                ">
+                    ${icon}
+                </div>
+
+                <div>
+                    <div style="
+                        font-size:10px;
+                        color:#64748b;
+                        margin-bottom:2px;
+                    ">
+                        ${new Date().toLocaleTimeString([], {hour12:false})}
+                    </div>
+
+                    <div style="
+                        font-weight:600;
+                        color:${text};
+                    ">
+                        ${msg}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // New Log Top
+    box.prepend(div);
+
+    // Max Logs
+    if (box.children.length > 50) {
+        box.removeChild(box.lastChild);
+    }
+}
+
+function generateSign(data) {
+    const copy = { ...data };
+    delete copy.signature; delete copy.timestamp;
+    const sorted = Object.keys(copy).sort().reduce((r, k) => { r[k] = copy[k]; return r; }, {});
+    return CryptoJS.MD5(JSON.stringify(sorted)).toString().toUpperCase();
+}
+
+async function callAPI(endpoint, data) {
+    const conf = CONFIG[session.platform];
+    data.timestamp = Math.floor(Date.now() / 1000);
+    data.random = "0f856c7260314a75bd8e754f02d60c16";
+    data.signature = generateSign(data);
+    try {
+        const res = await axios.post(conf.url + endpoint, data, {
+            headers: { 'Authorization': `Bearer ${session.token}`, 'Content-Type': 'application/json;charset=UTF-8' }
+        });
+        return res.data;
+    } catch (e) { return { code: -1 }; }
+}
+
+async function updateBalance() {
+    if (session.platform === "7SCROWN") {
+        try {
+            const bal = await s7Balance(session.token);
+            if (bal !== null) {
+                document.getElementById('display-bal').innerText = Number(bal).toLocaleString() + " Ks";
+            }
+            if (session.userId) {
+                document.getElementById('display-userid').innerText = session.userId;
+            }
+        } catch (e) { console.error(e); }
+        return;
+    }
+    const res = await callAPI('GetUserInfo', { language: CONFIG[session.platform].lang });
+    if (res.code === 0 && res.data) {
+        const data = res.data;
+        const bal = data.amount ?? data.balance ?? data.Amount ?? 0;
+        document.getElementById('display-bal').innerText = Number(bal).toLocaleString() + " Ks";
+        const userid = data.userid || data.userId || data.UserId || data.id || data.accountId || "N/A";
+        document.getElementById('display-userid').innerText = userid;
+    }
+}
+
+// --- Logic ---
+function startVisualTimer() {
+    setInterval(() => {
+        if (timeRemaining > 0) {
+            timeRemaining--;
+            
+            const m = Math.floor(timeRemaining / 60);
+            const s = timeRemaining % 60;
+            
+            const timerEl = document.getElementById('countdown-ui');
+            
+            // မှန်ကန်တဲ့ Timer ပြသမှု
+            timerEl.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+            // 5 စက္ကန့်ကနေ 1 အထိ အရောင်နီ + အသံ
+            if (timeRemaining <= 5 && timeRemaining >= 1) {
+                timerEl.style.color = '#ef4444';
+                timerEl.style.textShadow = '0 0 25px #ef4444, 0 0 50px #ef4444';
+                playCountdownSound(timeRemaining);
+            } else {
+                timerEl.style.color = 'var(--blue)';
+                timerEl.style.textShadow = '0 0 18px rgba(0, 212, 255, 0.5)';
+            }
+        }
+    }, 1000);
+}
+
+async function handleLogin() {
+    const platform = document.getElementById('platform').value;
+    const rawPhone = document.getElementById('phone').value;
+    const pass = document.getElementById('password').value;
+    session.platform = platform;
+
+    try {
+        if (platform === "7SCROWN") {
+            const proxyInp = document.getElementById("s7-proxy-input");
+            if (proxyInp && proxyInp.value.trim()) {
+                localStorage.setItem("s7_proxy", proxyInp.value.trim().replace(/\/+$/, ""));
+            }
+            if (location.protocol === "file:") {
+                addLog("⚠️ HTML ကို file နဲ့ မဖွင့်ပါနဲ့ — Website Link ဖွင့်ပါ (777 လိုပဲ)", "lose");
+                return;
+            }
+            addLog("7S Crown login... " + S7.base, "info");
+            const user = normalizePhone7s(rawPhone);
+            const result = await s7LoginFixed(user, pass);
+            session.token = result.token;
+            session.userId = result.id;
+            session.gameToken = await s7GetGameToken(session.token);
+            localStorage.setItem('ultra_session', JSON.stringify({
+                phone: rawPhone, platform, token: session.token, gameToken: session.gameToken, userId: session.userId
+            }));
+            // Force WinGo 1Min Big/Small UI
+            try {
+                document.getElementById('game-mode').value = 'W1';
+                document.getElementById('bet-target').value = 'PATTERN_BS';
+            } catch(e) {}
+            initUI();
+            await updateBalance();
+            const balanceText = document.getElementById('display-bal').innerText;
+            addLog(`
+                <span style="color:#22c55e; font-size:15px; font-weight:bold;">🟢 7S Crown Login OK</span><br>
+                🎮 Platform: <span style="color:#c084fc;">🟣 7SCROWN</span><br>
+                👤 ID: <span style="color:#60a5fa;">${session.userId}</span><br>
+                💰 Balance: <span style="color:#fbbf24;">${balanceText}</span><br>
+                🎲 Mode: WinGo 1Min · Big/Small
+            `, "win");
+            return;
+        }
+
+        const phone = "95" + rawPhone.replace(/^0/, '');
+        const res = await callAPI('Login', {
+            logintype: "mobile",
+            username: phone,
+            pwd: pass,
+            language: CONFIG[platform].lang
+        });
+
+        if (res.code === 0) {
+            session.token = res.data.token;
+            localStorage.setItem('ultra_session', JSON.stringify({
+                phone: rawPhone, platform, token: session.token
+            }));
+            initUI();
+            await updateBalance();
+            const userid = document.getElementById('display-userid').innerText || "N/A";
+            const balanceText = document.getElementById('display-bal').innerText.replace(/[^0-9.,]/g, '') || "0";
+            addLog(`
+                <span style="color:#22c55e; font-size:15px; font-weight:bold;">🟢 အကောင့်ဝင်ခြင်း အောင်မြင်ပါသည်!</span><br><br>
+                🔓 ဂိမ်းပလန်: <span style="color:#eab308;">𝑭𝑹𝑬𝑬 𝑴𝑶𝑫𝑬 𝑨𝒄𝒄𝒆𝒔𝒔</span><br>
+                🎮 ဂိမ်းအမည် : <span style="color:#c026d3;">🎰 ${session.platform}</span><br>
+                👤 အသုံးပြုသူအကောင့် ID: <span style="color:#60a5fa; font-weight:bold;">${userid}</span><br>
+                💰 လက်ကျန်ငွေ ပမာဏ: <span style="color:#fbbf24; font-weight:bold;">${balanceText} Ks</span>
+            `, "win");
+        } else {
+            addLog("Error: " + (res.msg || "Login မအောင်မြင်ပါ အင်တာနက်ဖွင့်ပါ"), "lose");
+        }
+    } catch (e) {
+        let msg = e.message || String(e);
+        if (msg === "Network Error" || (e.code === "ERR_NETWORK")) {
+            msg = "Network Error — 7S Proxy ဖွင့်ထားပါသလား? (node s7_proxy.js) Proxy URL မှန်အောင် ထည့်ပါ";
+        }
+        addLog("Login Error: " + msg, "lose");
+        console.error(e);
+    }
+}
+
+// Pattern Management
+function updatePatternUI() {
+    const mode = document.getElementById('pattern-mode').value;
+    const predefinedSelect = document.getElementById('predefined-pattern');
+    
+    if (mode === "AUTO_BS") {
+        predefinedSelect.style.display = "block";
+        document.getElementById('custom-sequence').disabled = true;
+    } else if (mode === "CUSTOM") {
+        predefinedSelect.style.display = "none";
+        document.getElementById('custom-sequence').disabled = false;
+    } else { // RANDOM
+        predefinedSelect.style.display = "none";
+        document.getElementById('custom-sequence').disabled = true;
+    }
+}
+
+// Get current pattern to use
+function getCurrentPattern() {
+    const mode = document.getElementById('pattern-mode').value;
+    
+    if (mode === "RANDOM") {
+        return Math.random() > 0.5 ? "B" : "S";
+    }
+    
+    if (mode === "AUTO_BS") {
+        const patternStr = document.getElementById('predefined-pattern').value;
+        return patternStr.split('');
+    }
+    
+    // Custom
+    return document.getElementById('custom-sequence').value
+        .split(',')
+        .map(s => s.trim().toUpperCase());
+}
+
+function refreshApp(btn){
+    location.reload();
+}
+
+function toggleBot() {
+    // ခလုတ်နှိပ်စဉ် Browser အသံစနစ်ကို အတင်း Unlock လုပ်ခြင်း (တိုးတိုးလေး ကြိုဖွင့်/ပိတ်လုပ်ခြင်း)
+    [audioDi1, audioDi2].forEach(audio => {
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+        }).catch(e => console.log("Unlock Error:", e));
+    });
+
+    session.isRunning = !session.isRunning;
+    const btn = document.getElementById('action-btn');
+    const tag = document.getElementById('bot-tag');
+    // Pattern Mode ကို log ထဲ ထည့်ပြပါ
+const patternMode = document.getElementById('pattern-mode').value;
+const selectedPattern = patternMode === "AUTO_BS" 
+    ? document.getElementById('predefined-pattern').value 
+    : document.getElementById('custom-sequence').value;
+
+addLog(`🎯 Pattern Mode: ${patternMode} → ${selectedPattern}`, "info");
+
+    btn.innerText = session.isRunning ? "🛑 ကစားတာ ရပ်မယ်" : "🚀 စတင် ကစားမယ်";
+    tag.innerText = session.isRunning ? "ကစားနေသည်" : "ရပ်ထားသည်";
+
+    if (session.isRunning) {
+        // Load Protection Settings
+        protection.stopProfit = Number(document.getElementById('stop-profit').value) || 5000;
+        protection.stopLoss = Number(document.getElementById('stop-loss').value) || 10000;
+        protection.maxConsecLoss = Number(document.getElementById('max-consec-loss').value) || 5;
+        protection.delay = Number(document.getElementById('bet-delay').value) || 3;
+        protection.enableProfitStop = document.getElementById('enable-profit-stop').checked;
+        protection.enableLossStop = document.getElementById('enable-loss-stop').checked;
+        protection.currentConsecLoss = 0;
+
+        startLogic();
+
+        // Bot Activated Message
+        const gameMode = document.getElementById('game-mode').value;
+        const targetMode = document.getElementById('bet-target').value;
+        const currentBalance = document.getElementById('display-bal').innerText || "0 Ks";
+
+        addLog(`
+            <span style="color:#22c55e; font-size:17px; font-weight:bold;">🔋 𝑩𝑶𝑻 ကို စတင်လိုက်သည်</span><br>
+            ══════════════════════<br>
+            🎮 𝑷𝒍𝒂𝒕𝒇𝒐𝒓𝒎: <span style="color:#c026d3;">🎰 ${session.platform}</span><br>
+            💳 လက်ကျန်ငွေ: <span style="color:#fbbf24; font-weight:bold;">${currentBalance}</span><br>
+🎲 ဂိမ်း: <span style="color:#67e8f9; font-weight:bold;">${gameMode === 'W30' ? 'WINGO 30S' : 'WINGO 1MIN'}</span><br>
+🎯 ဂိမ်းအမျိုးအစား: <span style="color:#a5b4fc; font-weight:bold;">${targetMode === 'PATTERN_BS' ? '𝑩𝒊𝒈 / 𝑺𝒎𝒂𝒍𝒍' : '𝑵𝒖𝒎𝒃𝒆𝒓𝒔'}</span><br>
+🛡️ <span style="color:#facc15; font-weight:bold;">Protection</span><br>
+💰 Stop on Profit: <span style="color:#22c55e;">${protection.stopProfit}</span><br>
+⛔ Stop on Loss: <span style="color:#ef4444;">${protection.stopLoss}</span><br>
+🔁 Max Loss: <span style="color:#f97316;">${protection.maxConsecLoss}</span><br>
+        `, "info");
+
+    } else {
+        // Bot Stop Message
+        addLog(`
+    <span style="color:#f59e0b; font-size:16px; font-weight:bold;">🛑 𝑩𝒐𝒕 𝑺𝒕𝒐𝒑𝒑𝒆𝒅</span><br>
+    ══════════════════════<br>
+    🧩 လက်ကျန်ငွေ: <span style="color:#fbbf24; font-weight:bold;">${document.getElementById('display-bal').innerText}</span><br>
+    📈 Total Profit: 
+    <span style="color:${stats.profit >= 0 ? '#22c55e' : '#ef4444'}; font-weight:bold;">
+        ${stats.profit.toFixed(2)} Ks
+    </span><br>
+        `, "info");
+    }
+}
+
+async function startLogic() {
+    let lastIssue = "";
+    while (session.isRunning) {
+        try {
+            const game = document.getElementById('game-mode').value;
+            const target = document.getElementById('bet-target').value;
+            const mults = document.getElementById('bet-multipliers').value.split(',').map(Number);
+            const sequence = document.getElementById('custom-sequence').value.split(',').map(s => s.trim().toUpperCase());
+            const baseAmt = Number(document.getElementById('base-amount').value);
+            const typeID = game === 'W30' ? 30 : 1;
+
+            // ===== 7SCROWN BRANCH =====
+            if (session.platform === "7SCROWN") {
+                // 6ဇ မကျော် — max multiplier steps
+                const maxMartin = Number(document.getElementById('max-consec-loss')?.value) || 6;
+                if (stats.betIdx >= maxMartin) {
+                    stats.betIdx = maxMartin - 1;
+                    addLog("🔢 6ဇ မကျော်: index capped at " + stats.betIdx, "info");
+                }
+                if (!session.gameToken) {
+                    try { session.gameToken = await s7GetGameToken(session.token); } catch(e) {
+                        addLog("7S game token error: " + e.message, "lose");
+                        await new Promise(r => setTimeout(r, 3000));
+                        continue;
+                    }
+                }
+                const currentIssue = await s7CurrentIssue(session.gameToken);
+                if (currentIssue) {
+                    document.getElementById('issue-ui').innerText = "ISSUE: " + currentIssue;
+                    if (currentIssue !== lastIssue) {
+                        lastIssue = currentIssue;
+                        timeRemaining = 60;
+                        const currentMult = mults[stats.betIdx] || mults[mults.length-1];
+                        let patternData = getCurrentPattern();
+                        let pick = (document.getElementById('pattern-mode').value === "RANDOM")
+                            ? patternData : patternData[stats.sequenceIdx % patternData.length];
+                        let sideLabel = (pick === 'B' || pick === 'BIG') ? "BIG" : "SMALL";
+                        const amount = baseAmt * currentMult;
+                        let betRes = await s7PlaceBet(session.gameToken, sideLabel, amount, currentIssue);
+                        if (betRes.code !== 0) {
+                            // refresh token and retry once
+                            try {
+                                session.gameToken = await s7GetGameToken(session.token);
+                                betRes = await s7PlaceBet(session.gameToken, sideLabel, amount, currentIssue);
+                            } catch(e) {}
+                        }
+                        if (betRes.code === 0) {
+                            addLog(`🎮7SCROWN: ${currentIssue}<br>🎯 ${sideLabel}<br>🔥 x${currentMult}<br>💸 ${amount.toLocaleString()} MMK`, "info");
+                            updateBalance();
+                            stats.sequenceIdx++;
+                            await new Promise(r => setTimeout(r, Math.max((timeRemaining - 2), 5) * 1000));
+                            await checkResult7s(currentIssue, sideLabel, amount);
+                        } else {
+                            addLog("7S Bet error: " + (betRes.msg || "fail"), "lose");
+                        }
+                    }
+                }
+                await new Promise(r => setTimeout(r, protection.delay * 1000));
+                continue;
+            }
+            // ===== END 7SCROWN =====
+            
+            const issueRes = await callAPI('GetGameIssue', { typeID: Number(typeID), language: CONFIG[session.platform].lang });
+            const currentIssue = issueRes.data?.issueNumber;
+
+            if (currentIssue) {
+                document.getElementById('issue-ui').innerText = "ISSUE: " + currentIssue;
+                
+                if (currentIssue !== lastIssue) {
+                    lastIssue = currentIssue;
+                    timeRemaining = (game === 'W30') ? 30 : 60; // Reset timer for new issue
+                    
+                    const currentMult = mults[stats.betIdx] || mults[mults.length-1];
+                    // === ဒီနေရာကို အစားထိုးပါ ===
+let patternData = getCurrentPattern();
+let pick;
+
+if (document.getElementById('pattern-mode').value === "RANDOM") {
+    pick = patternData; // single B or S
+} else {
+    pick = patternData[stats.sequenceIdx % patternData.length];
+}
+// =================================
+                    let side, gType, label;
+
+                    if (target === "PATTERN_BS") {
+                        gType = 2;
+                        if (pick === 'B' || pick === 'BIG') { side = 13; label = "BIG"; }
+                        else { side = 14; label = "SMALL"; }
+                    } else {
+                        gType = 1;
+                        side = isNaN(parseInt(pick)) ? 0 : parseInt(pick);
+                        label = `<img src="${NUMBER_IMAGES[side]}" class="num-img">`;
+                    }
+
+                    const betRes = await callAPI('GameBetting', {
+                        "typeId": Number(typeID), "issuenumber": String(currentIssue),
+                        "amount": Number(baseAmt), "betCount": Number(currentMult),
+                        "gameType": Number(gType), "selectType": Number(side), "language": CONFIG[session.platform].lang
+                    });
+
+                    if (betRes.code === 0) {
+                        addLog(`
+      🎮${session.platform}: ${currentIssue}<br>
+        🎯 ရွေးချယ်မှု : ${label}<br>
+        🔥 ဇလိုက်သည် : (x${currentMult})<br>
+        💸 ထိုးကြေး : ${(baseAmt * currentMult).toLocaleString()} MMK
+    `, "info");
+                        updateBalance();
+                        stats.sequenceIdx++;
+                        
+                        await new Promise(r => setTimeout(r, (timeRemaining - 2) * 1000)); 
+                        await checkResult(currentIssue, side, baseAmt * currentMult, game, gType);
+                    }
+                }
+            }
+        } catch (e) { }
+        await new Promise(r => setTimeout(r, protection.delay * 1000));
+    }
+}
+
+
+async function checkResult7s(issue, sideLabel, totalAmt) {
+    try {
+        const list = await s7History(session.gameToken || session.token);
+        const found = list.find(x => String(x.numero) === String(issue));
+        if (!found) {
+            setTimeout(() => checkResult7s(issue, sideLabel, totalAmt), 3000);
+            return;
+        }
+        const winNum = Number(found.winNo);
+        const isBig = winNum >= 5;
+        const isWin = (sideLabel === "BIG" && isBig) || (sideLabel === "SMALL" && !isBig);
+        const resultText = winNum + " " + (isBig ? "Big" : "Small");
+        if (isWin) {
+            const profitThisBet = totalAmt * 0.96;
+            stats.profit += profitThisBet;
+            stats.betIdx = 0;
+            protection.currentConsecLoss = 0;
+            checkProtectionStop();
+            if (typeof showResultDialog === "function") showResultDialog(true, profitThisBet, resultText, winNum);
+            addLog("🏆 WIN +" + profitThisBet.toFixed(2) + " | " + resultText + " | Profit " + stats.profit.toFixed(2), "win");
+            saveHistory({ type:"win", issue:issue, amount:totalAmt, profit:profitThisBet, time:new Date().toLocaleTimeString(), platform:"7SCROWN" });
+        } else {
+            stats.profit -= totalAmt;
+            stats.betIdx++;
+            protection.currentConsecLoss++;
+            checkProtectionStop();
+            if (typeof showResultDialog === "function") showResultDialog(false, -totalAmt, resultText, winNum);
+            addLog("💀 LOSS -" + totalAmt + " | " + resultText + " | Profit " + stats.profit.toFixed(2), "lose");
+            saveHistory({ type:"lose", issue:issue, amount:totalAmt, profit:-totalAmt, time:new Date().toLocaleTimeString(), platform:"7SCROWN" });
+        }
+        document.getElementById("display-profit").innerText = stats.profit.toFixed(2);
+        document.getElementById("display-profit").style.color = stats.profit >= 0 ? "#22c55e" : "#ef4444";
+        updateBalance();
+    } catch (e) {
+        console.error(e);
+        setTimeout(() => checkResult7s(issue, sideLabel, totalAmt), 3000);
+    }
+}
+
+async function checkResult(issue, side, totalAmt, game, gType) {
+    const res = await callAPI('GetNoaverageEmerdList', { 
+        typeId: game === 'W30' ? 30 : 1, 
+        pageSize: 5, 
+        language: CONFIG[session.platform].lang 
+    });
+    
+    const found = res.data?.list?.find(x => x.issueNumber == issue);
+    
+    if (found) {
+        const winNum = Number(found.number);
+        const winImg = `<img src="${NUMBER_IMAGES[winNum]}" class="num-img">`;
+        
+        let isWin = gType === 1 
+            ? (winNum === side) 
+            : ((winNum >= 5 ? 13 : 14) === side);
+        
+        const resultText = gType === 1 
+            ? `${winImg} ${winNum}` 
+            : `${winImg} ${winNum >= 5 ? 'Big' : 'Small'}`;
+
+        if (isWin) {
+            const winAmt = gType === 1 ? (totalAmt * 8.8) : (totalAmt * 1.96);
+            const profitThisBet = winAmt - totalAmt;
+            
+            stats.profit += profitThisBet; 
+            stats.betIdx = 0;
+            protection.currentConsecLoss = 0;
+            checkProtectionStop();
+
+            // === လှလှပပသော WIN DIALOG ===
+            showResultDialog(true, profitThisBet, resultText, winNum);
+
+            addLog(`
+                <span style="color:#22c55e; font-size:16px; font-weight:bold;">🏆 အနိုင်ရရှိသည် +${profitThisBet.toFixed(2)} Ks</span><br>
+                ══════════════════════<br>
+                📊 ရလဒ်: ${resultText}<br>
+                🧩 လက်ကျန်ငွေ: <span style="color:#fbbf24; font-weight:bold;">${document.getElementById('display-bal').innerText}</span><br>
+                📈 𝑻𝒐𝒕𝒂𝒍 𝑷𝒓𝒐𝒇𝒊𝒕: <span style="color:#22c55e; font-weight:bold;">+${stats.profit.toFixed(2)} Ks</span>
+            `, "win");
+
+            saveHistory({
+                type: "win",
+                issue: issue,
+                amount: totalAmt,
+                profit: profitThisBet,
+                time: new Date().toLocaleTimeString(),
+                platform: session.platform
+            });
+
+        } else {
+            stats.profit -= totalAmt; 
+            stats.betIdx++;
+            protection.currentConsecLoss++;
+            checkProtectionStop();
+
+            // === လှလှပပသော LOSS DIALOG ===
+            showResultDialog(false, -totalAmt, resultText, winNum);
+
+            addLog(`
+                <span style="color:#ef4444; font-size:16px; font-weight:bold;">💀 ရှုံးသွားပါပြီ -${totalAmt} Ks</span><br>
+                ══════════════════════<br>
+                📊 ရလဒ်: ${resultText}<br>
+                🧩 လက်ကျန်ငွေ: <span style="color:#fbbf24; font-weight:bold;">${document.getElementById('display-bal').innerText}</span><br>
+                📈 𝑻𝒐𝒕𝒂𝒍 𝑷𝒓𝒐𝒇𝒊𝒕: <span style="color:#ef4444; font-weight:bold;">${stats.profit.toFixed(2)} Ks</span>
+            `, "lose");
+
+            saveHistory({
+                type: "lose",
+                issue: issue,
+                amount: totalAmt,
+                profit: -totalAmt,
+                time: new Date().toLocaleTimeString(),
+                platform: session.platform
+            });
+        }
+
+        document.getElementById('display-profit').innerText = stats.profit.toFixed(2);
+        document.getElementById('display-profit').style.color = stats.profit >= 0 ? "#22c55e" : "#ef4444";
+        updateBalance();
+    } else { 
+        setTimeout(() => checkResult(issue, side, totalAmt, game, gType), 3000); 
+    }
+}
+// Music Player Functions
+// ==================== MUSIC PLAYER ====================
+// ==================== MUSIC & BACKGROUND ====================
+
+let currentAudio = null;
+
+// Toggle Music Player
+function toggleMusicPlayer() {
+    const player = document.getElementById('music-player');
+    if (player) {
+        player.style.display = (player.style.display === 'none' || player.style.display === '') ? 'block' : 'none';
+    }
+}
+
+// Toggle Background Panel
+function toggleBGPanel() {
+    const panel = document.getElementById('bg-panel');
+    if (panel) {
+        panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+    }
+}
+
+function setBackground(mode) {
+    const backgrounds = {
+        1: 'linear-gradient(145deg,#06111f,#0b1f38)',
+        2: 'linear-gradient(145deg,#1a0033,#4b0082)',
+        3: 'linear-gradient(145deg,#0f2b1f,#1a3c2e)',
+        4: 'linear-gradient(145deg,#330000,#800000)',
+        5: 'linear-gradient(145deg,#3a1c00,#ff8c00)',
+        6: 'linear-gradient(145deg,#002b36,#00bcd4)',
+        7: 'linear-gradient(145deg,#1f1f1f,#555555)',
+        8: 'linear-gradient(145deg,#2d0036,#ff1493)',
+        9: 'linear-gradient(145deg,#001a33,#0066ff)',
+        10: 'linear-gradient(145deg,#FFFFFF,#FFFFFF)'
+    };
+
+    document.body.style.background = backgrounds[mode] || backgrounds[1];
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundAttachment = 'fixed';
+
+    localStorage.setItem('ultra_bg', mode);
+}
+
+// Music Player Logic
+document.addEventListener('DOMContentLoaded', function() {
+    const audioInput = document.getElementById('audio-input');
+    const audioPlayer = document.getElementById('audio-player');
+    const songName = document.getElementById('song-name');
+
+    if (audioInput && audioPlayer) {
+        audioInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('audio/')) {
+                alert("သီချင်း ဖိုင်တစ်ခုပဲ ရွေးပါ (mp3, m4a, wav)");
+                return;
+            }
+
+            const objectURL = URL.createObjectURL(file);
+            
+            if (currentAudio) URL.revokeObjectURL(currentAudio);
+            currentAudio = objectURL;
+
+            audioPlayer.src = objectURL;
+            audioPlayer.load();
+            songName.textContent = file.name.length > 35 ? file.name.substring(0, 32) + "..." : file.name;
+
+            setTimeout(() => {
+                audioPlayer.play().catch(() => {});
+            }, 300);
+        });
+    }
+});
+
+// Background Upload
+document.addEventListener('DOMContentLoaded', function() {
+    const bgUpload = document.getElementById('bg-upload');
+    if (bgUpload) {
+        bgUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 15 * 1024 * 1024) {
+                alert("ပုံဖိုင်က 15MB ထက် မကြီးရပါဘူး");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.body.style.background = `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url("${ev.target.result}") center/cover no-repeat fixed`;
+                localStorage.setItem('ultra_bg_custom', ev.target.result);
+            };
+            reader.readAsDataURL(file);
+            
+            toggleBGPanel();
+        });
+    }
+});
+
+// Load Saved Background
+window.addEventListener('load', () => {
+    const savedCustom = localStorage.getItem('ultra_bg_custom');
+    if (savedCustom) {
+        document.body.style.background = `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url("${savedCustom}") center/cover no-repeat fixed`;
+    }
+});
+// Drawer Functions
+function openDrawer() {
+    document.getElementById('side-drawer').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('show');
+}
+
+function closeDrawer() {
+    document.getElementById('side-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('show');
+}
+
+function openLink(url){
+    window.open(url, "_blank");
+}
+
+function showHistory() {
+    let text = "📜 GAME HISTORY\n\n";
+
+    if(gameHistory.length === 0){
+        alert("မှတ်တမ်းမရှိသေးပါ");
+        return;
+    }
+
+    gameHistory.slice(0,15).forEach(h=>{
+    text += `${h.time} | ${h.issue} | ${h.type.toUpperCase()} | ${h.amount} | ${h.profit} | 🎮 ${h.platform}\n`;
+});
+
+    alert(text);
+    closeDrawer();
+}
+function checkProtectionStop() {
+    if (!session.isRunning) return;
+
+    // Stop on Profit
+    if (protection.enableProfitStop && stats.profit >= protection.stopProfit) {
+        addLog(`🛑 <b style="color:#22c55e">STOP ON PROFIT REACHED (+${stats.profit.toFixed(0)} Ks)</b>`, "win");
+        forceStopBot();
+        return;
+    }
+
+    // Stop on Loss
+    if (protection.enableLossStop && stats.profit <= -protection.stopLoss) {
+        addLog(`🛑 <b style="color:#ef4444">STOP ON LOSS REACHED (-${Math.abs(stats.profit).toFixed(0)} Ks)</b>`, "lose");
+        forceStopBot();
+        return;
+    }
+
+    // Max Consecutive Loss
+    if (protection.currentConsecLoss >= protection.maxConsecLoss) {
+        addLog(`🛑 <b style="color:#f59e0b">MAX CONSECUTIVE LOSS (${protection.currentConsecLoss}) ရောက်သွားပါပြီ</b>`, "lose");
+        forceStopBot();
+    }
+}
+
+// === FORCE STOP FUNCTION (အသစ်) ===
+function forceStopBot() {
+    session.isRunning = false;
+    
+    const btn = document.getElementById('action-btn');
+    if (btn) {
+        btn.innerText = "🚀 စတင် ကစားမယ်";
+    }
+    
+    const tag = document.getElementById('bot-tag');
+    if (tag) {
+        tag.innerText = "ရပ်ထားသည်";
+        tag.style.color = "#fff";
+    }
+
+    addLog("🔴 Bot ကို Protection ကြောင့် အလိုအလျောက် ရပ်လိုက်ပါပြီ", "info");
+}
+// Pattern Input Toggle Function
+function togglePatternInput() {
+    const mode = document.getElementById('pattern-mode').value;
+    const customContainer = document.getElementById('custom-sequence-container');
+    const predefinedSelect = document.getElementById('predefined-pattern');
+
+    if (mode === "CUSTOM") {
+        customContainer.style.display = "block";
+        predefinedSelect.style.display = "none";
+    } 
+    else if (mode === "AUTO_BS") {
+        customContainer.style.display = "none";
+        predefinedSelect.style.display = "block";
+    } 
+    else { // RANDOM
+        customContainer.style.display = "none";
+        predefinedSelect.style.display = "none";
+    }
+}
+
+// Page Load မှာ ပထမ တစ်ခါ ခေါ်ပေးဖို့
+window.addEventListener('load', () => {
+    togglePatternInput();   // ပထမ အနေနဲ့ Custom ကို ပြထားမယ်
+});
+</script>
+<!-- Side Drawer -->
+<div id="side-drawer" class="drawer">
+    <div class="drawer-header">
+        <h3>Ultra Bet V2</h3>
+        <button class="close-btn" onclick="closeDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-content">
+
+        <div class="drawer-item" onclick="openHistoryDialog(); closeDrawer();">
+            📜 ဂိမ်းမှတ်တမ်း
+        </div>
+
+        <div class="drawer-item" onclick="openLink('https://t.me/KMM_MOD1')">
+            📢 Join Channel
+        </div>
+
+        <div class="drawer-item" onclick="openLink('https://t.me/taka1251')">
+            👥 Join Group
+        </div>
+
+        <div class="drawer-item" onclick="openLink('https://t.me/kiki20251')">
+            👨‍💻 Developer Acc
+        </div>
+
+        <div class="drawer-divider"></div>
+
+        <div class="drawer-item logout-item" onclick="logout(); closeDrawer();">
+            🚪 Logout
+        </div>
+
+    </div>
+</div>
+
+<!-- Drawer Overlay -->
+<div id="drawer-overlay" class="drawer-overlay" onclick="closeDrawer()"></div>
+<!-- Music Player -->
+<div id="music-player" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(6,17,31,0.97); border: 1px solid #00d4ff; border-radius: 20px; padding: 15px 20px; width: 90%; max-width: 420px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h4 style="margin:0; color:var(--blue);">🎵 Now Playing</h4>
+        <button onclick="toggleMusicPlayer()" style="
+    background:none;
+    border:none;
+    color:#94a3b8;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s;
+">
+    ✕
+</button>
+    </div>
+    <input type="file" id="audio-input" accept="audio/*" style="display:none;">
+    <button onclick="document.getElementById('audio-input').click()" style="width:100%; margin-bottom:12px; background: linear-gradient(135deg,#22c55e,#15803d); padding:14px; border-radius:16px;">
+        📁 သီချင်း ရွေးပါ
+    </button>
+    <audio id="audio-player" controls style="width:100%;"></audio>
+    <div id="song-name" style="margin-top:8px; text-align:center; font-size:13px; color:#94a3b8;">No song selected</div>
+</div>
+</body>
+</html>
